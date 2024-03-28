@@ -38,6 +38,7 @@ Typescript Track: https://exercism.org/tracks/typescript/exercises
 
 ## Medium 👦
 
+- [Binary Search](./binary-search/)
 - [Clock](./clock/)
 - [Grade School](./grade-school/)
 - [Linked List](./linked-list/)
