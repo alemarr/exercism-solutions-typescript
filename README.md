@@ -46,5 +46,7 @@ Typescript Track: https://exercism.org/tracks/typescript/exercises
 - [Matrix](./matrix/)
 - [Nucleotide Count](./nucleotide-count/)
 - [Robot Name](./robot-name/)
+- [Scrabble Score](./scrabble-score/)
 - [Secret Handshake](./secret-handshake/)
+- [Simple Cipher](./simple-cipher/)
 - [Sublist](./sublist/)
