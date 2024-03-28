@@ -40,9 +40,11 @@ Typescript Track: https://exercism.org/tracks/typescript/exercises
 
 - [Binary Search](./binary-search/)
 - [Clock](./clock/)
+- [Collatz Conjecture](./collatz-conjecture/)
 - [Grade School](./grade-school/)
 - [Linked List](./linked-list/)
 - [Matrix](./matrix/)
+- [Nucleotide Count](./nucleotide-count/)
 - [Robot Name](./robot-name/)
 - [Secret Handshake](./secret-handshake/)
 - [Sublist](./sublist/)
