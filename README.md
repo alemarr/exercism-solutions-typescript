@@ -1,6 +1,8 @@
 # Exercism Solutions - Typescript Track
 
-## Easy 🐤
+Typescript Track: https://exercism.org/tracks/typescript/exercises
+
+## Easy 👶
 
 - [Acronym](./acronym/)
 - [Anagram](./anagram/)
@@ -14,9 +16,7 @@
 - [Eiluds Eggs](./eliuds-eggs/)
 - [ETL](./etl/)
 - [Gigasecond](./gigasecond/)
-- [Grade School](./grade-school/)
 - [Hamming](./hamming/)
-- [Hello World](./hello-world/)
 - [Isogram](./isogram/)
 - [Leap](./leap/)
 - [Pangram](./pangram/)
@@ -36,3 +36,12 @@
 - [Two Fer](./two-fer/)
 - [Word Count](./word-count/)
 
+## Medium 👦
+
+- [Clock](./clock/)
+- [Grade School](./grade-school/)
+- [Linked List](./linked-list/)
+- [Matrix](./matrix/)
+- [Robot Name](./robot-name/)
+- [Secret Handshake](./secret-handshake/)
+- [Sublist](./sublist/)
