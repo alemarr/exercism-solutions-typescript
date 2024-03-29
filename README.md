@@ -38,6 +38,7 @@ Typescript Track: https://exercism.org/tracks/typescript/exercises
 
 ## Medium 👦
 
+- [Beer Song](./beer-song/)
 - [Binary Search](./binary-search/)
 - [Clock](./clock/)
 - [Collatz Conjecture](./collatz-conjecture/)
