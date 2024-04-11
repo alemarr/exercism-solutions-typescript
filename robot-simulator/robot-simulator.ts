@@ -7,19 +7,24 @@ export class InvalidInputError extends Error {
 
 type Direction = "north" | "east" | "south" | "west";
 type Coordinates = [number, number];
-const rotation: Record<"left" | "right", number> = { left: -1, right: 1 };
+type Rotation = "left" | "right";
+
+const INITIAL_ROTATION = 1;
+const MAX_ROTATION = 4;
+
+const rotation: Record<Rotation, number> = { left: -1, right: 1 };
 const directionMap: Record<Direction, number> = {
-  north: 1,
-  east: 2,
+  north: INITIAL_ROTATION,
+  east: 2, 
   south: 3,
-  west: 4,
+  west: MAX_ROTATION,
 };
 
-function isDirection(s: string): s is Direction {
-  return s === "north" || s === "east" || s === "south" || s === "west";
+const isDirection = (s: string): s is Direction => {
+  return ["north", "south", "east", "west"].includes(s);
 }
 
-function getDirectionFromCalculation(calculation: number): Direction {
+const getDirectionFromCalculation = (calculation: number): Direction => {
   const [direction] = Object.entries(directionMap).filter(
     ([_, value]) => calculation === value
   );
@@ -65,20 +70,34 @@ export class Robot {
   }
 
   private advance(): void {
-    if (this._bearing === "north" || this._bearing === "south") {
-      this.changePosition(0, 1);
+    if (this.isOnYAxis()) {
+      this.advanceOnYAxis();
     } else {
-      this.changePosition(1, 0);
+      this.advanceOnXAxis();
     }
+  }
+
+  private isOnYAxis(): boolean {
+    return this._bearing === "south" || this._bearing === "north";
+  }
+
+  private advanceOnYAxis()
+  {
+    this.changePosition(0, 1);
+  }
+
+  private advanceOnXAxis()
+  {
+    this.changePosition(1, 0);
   }
 
   private changeDirection(movement: number): void {
     let direction = directionMap[this.bearing] + movement;
-    if (direction > directionMap["west"]) {
-      direction -= directionMap["west"];
+    if (direction > MAX_ROTATION) {
+      direction -= MAX_ROTATION;
     }
-    if (direction < directionMap["north"]) {
-      direction = directionMap["west"];
+    if (direction < INITIAL_ROTATION) {
+      direction = MAX_ROTATION;
     }
 
     this._bearing = getDirectionFromCalculation(direction);
