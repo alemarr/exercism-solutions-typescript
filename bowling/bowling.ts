@@ -1,31 +1,41 @@
 export class Bowling {
-  private _score: number = 0;
-  private readonly _frames: Frame[] = [];
-
+  private readonly _initialFrame: Frame;
+  
   constructor() {
-    this._frames = Array.from({ length: 10 }).map(() => {
-      return new Frame();
+    this._initialFrame = new Frame(false);
+    let current = this._initialFrame;
+    Array.from({ length: 9 }).map((_, idx) => {
+      const frame = new Frame(idx + 1 === 9);
+      current.setNext(frame);
+      frame.setPrevious(current);
+      current = frame;
     });
   }
 
   public roll(pins: number): void {
-    const currentIdx = this._frames.findIndex((frame: Frame) => !frame.isComplete());
-    const current = this._frames[currentIdx];
+    let current = this._initialFrame;
+    while (current.isComplete() && current?.next() !== undefined) {
+      current = current.next()!;
+    }
 
     if (pins === 10) {
-      current.addStrike(pins);
+      current?.addStrike(pins);
     }
 
     if (pins < 10) {
-      current.addOpen(pins);
+      current?.addOpen(pins);
     }
   }
 
   public score(): number {
-    return this._frames.reduce((acc, frame) => {
-      acc += frame.score();
-      return acc;
-    }, 0)
+    let score = this._initialFrame.score();
+    let current = this._initialFrame;
+    while (current?.next() !== undefined) {
+      current = current.next()!;
+      score += current.score();
+    }
+
+    return score;
   }
 }
 
@@ -33,7 +43,31 @@ type Tabulation = "Strike" | "Spare" | "Open";
 
 class Frame {
   private _rolls: number[] = [];
-  private _tabulation: Tabulation;
+  private _tabulation?: Tabulation;
+  private _next?: Frame;
+  private _previous?: Frame;
+
+  constructor(private readonly _isLast: boolean) {}
+
+  public tabulation(): Tabulation | undefined {
+    return this._tabulation;
+  }
+
+  public next(): Frame | undefined {
+    return this._next;
+  }
+
+  public previous(): Frame | undefined {
+    return this._previous;
+  }
+
+  public setNext(next: Frame): void {
+    this._next = next;
+  }
+
+  public setPrevious(previous: Frame): void {
+    this._previous = previous;
+  }
 
   private addRoll(roll: number): void {
     this._rolls.push(roll);
@@ -46,7 +80,7 @@ class Frame {
 
   public addOpen(roll: number): void {
     this.addRoll(roll);
-    if (this.isComplete() && this.score() === 10) {
+    if (this.isComplete() && this._rolls[0] + this._rolls[1] === 10) {
       this._tabulation = "Spare";
     } else {
       this._tabulation = "Open";
@@ -54,10 +88,24 @@ class Frame {
   }
 
   public score(): number {
-    return this._rolls.reduce((acc, roll) => {
-      acc += roll;
-      return acc;
-    }, 0)
+    return this.getScoreForRolls();
+  }
+
+  private getScoreForRolls(): number {
+    const roll = this._rolls[0] ?? 0;
+    const nextRoll = this._rolls[1] ?? 0;
+    switch (true) {
+      case this._previous?.tabulation() === "Spare":
+        return roll * 2 + nextRoll;
+      case this._isLast && this.tabulation() === "Spare":
+        return roll * 2 + nextRoll;
+      case this._previous?.tabulation() === "Strike":
+        return roll * 2 + nextRoll * 2;
+      case this.tabulation() === "Strike":
+        return roll;
+      default:
+        return roll + nextRoll;
+    }
   }
 
   public isComplete(): boolean {

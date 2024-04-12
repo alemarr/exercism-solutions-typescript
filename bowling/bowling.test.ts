@@ -38,7 +38,7 @@ describe('Bowling', () => {
       expect(bowling.score()).toEqual(16)
     })
 
-    xit('consecutive spares each get a one roll bonus', () => {
+    it('consecutive spares each get a one roll bonus', () => {
       const rolls = [5, 5, 3, 7, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
       const bowling = new Bowling()
       rolls.forEach((roll) => {
@@ -47,7 +47,7 @@ describe('Bowling', () => {
       expect(bowling.score()).toEqual(31)
     })
 
-    xit('a spare in the last frame gets a one roll bonus that is counted once', () => {
+    it('a spare in the last frame gets a one roll bonus that is counted once', () => {
       const rolls = [
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 3, 7,
       ]
@@ -58,7 +58,7 @@ describe('Bowling', () => {
       expect(bowling.score()).toEqual(17)
     })
 
-    xit('a strike earns ten points in a frame with a single roll', () => {
+    it('a strike earns ten points in a frame with a single roll', () => {
       const rolls = [10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
       const bowling = new Bowling()
       rolls.forEach((roll) => {
@@ -67,7 +67,7 @@ describe('Bowling', () => {
       expect(bowling.score()).toEqual(10)
     })
 
-    xit('points scored in the two rolls after a strike are counted twice as a bonus', () => {
+    it('points scored in the two rolls after a strike are counted twice as a bonus', () => {
       const rolls = [10, 5, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
       const bowling = new Bowling()
       rolls.forEach((roll) => {
@@ -76,7 +76,7 @@ describe('Bowling', () => {
       expect(bowling.score()).toEqual(26)
     })
 
-    xit('consecutive strikes each get the two roll bonus', () => {
+    it('consecutive strikes each get the two roll bonus', () => {
       const rolls = [10, 10, 10, 5, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
       const bowling = new Bowling()
       rolls.forEach((roll) => {
@@ -85,7 +85,7 @@ describe('Bowling', () => {
       expect(bowling.score()).toEqual(81)
     })
 
-    xit('a strike in the last frame gets a two roll bonues that is counted once', () => {
+    it('a strike in the last frame gets a two roll bonues that is counted once', () => {
       const rolls = [
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 7, 1,
       ]
