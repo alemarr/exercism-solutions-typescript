@@ -20,7 +20,7 @@ describe('Bowling', () => {
       expect(bowling.score()).toEqual(90)
     })
 
-    xit('a spare followed by zeros is worth ten points', () => {
+    it('a spare followed by zeros is worth ten points', () => {
       const rolls = [6, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
       const bowling = new Bowling()
       rolls.forEach((roll) => {
@@ -29,7 +29,7 @@ describe('Bowling', () => {
       expect(bowling.score()).toEqual(10)
     })
 
-    xit('points scored in the roll after a spare are counted twice', () => {
+    it('points scored in the roll after a spare are counted twice', () => {
       const rolls = [6, 4, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
       const bowling = new Bowling()
       rolls.forEach((roll) => {
