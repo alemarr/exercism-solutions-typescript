@@ -151,21 +151,21 @@ describe('Bowling', () => {
   })
 
   describe('Check game rules.', () => {
-    xit('rolls cannot score negative points', () => {
+    it('rolls cannot score negative points', () => {
       const bowling = new Bowling()
       expect(() => {
         bowling.roll(-1)
       }).toThrow(new Error('Negative roll is invalid'))
     })
 
-    xit('a roll cannot score more than 10 points', () => {
+    it('a roll cannot score more than 10 points', () => {
       const bowling = new Bowling()
       expect(() => {
         bowling.roll(11)
       }).toThrow(new Error('Pin count exceeds pins on the lane'))
     })
 
-    xit('two rolls in a frame cannot score more than 10 points', () => {
+    it('two rolls in a frame cannot score more than 10 points', () => {
       const bowling = new Bowling()
       bowling.roll(5)
       expect(() => {
@@ -173,7 +173,7 @@ describe('Bowling', () => {
       }).toThrow(new Error('Pin count exceeds pins on the lane'))
     })
 
-    xit('bonus roll after a strike in the last frame cannot score more than 10 points', () => {
+    it('bonus roll after a strike in the last frame cannot score more than 10 points', () => {
       const rolls = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10]
       const bowling = new Bowling()
       rolls.forEach((roll) => {

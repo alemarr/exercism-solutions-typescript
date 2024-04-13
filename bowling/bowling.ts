@@ -14,6 +14,12 @@ export class Bowling {
     }
 
     public roll(pins: number): void {
+        if (pins < 0) {
+            throw new Error('Negative roll is invalid');
+        }
+        if (pins > 10) {
+            throw new Error('Pin count exceeds pins on the lane');
+        }
         let current = this._initialFrame;
         while (current.isComplete() && current?.next() !== undefined) {
             current = current.next()!;
@@ -72,6 +78,15 @@ class Frame {
     }
 
     private addRoll(roll: number): void {
+        const tmp = [...this._rolls];
+        tmp.push(roll);
+        const total = tmp.reduce((acc, roll) => {
+            acc += roll;
+            return acc;
+        })
+        if (total > 10 && !this._isLast) {
+            throw new Error('Pin count exceeds pins on the lane');
+        }
         this._rolls.push(roll);
     }
 
