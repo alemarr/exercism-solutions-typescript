@@ -96,7 +96,7 @@ describe('Bowling', () => {
       expect(bowling.score()).toEqual(18)
     })
 
-    xit('rolling a spare with the two roll bonus does not get a bonus roll', () => {
+    it('rolling a spare with the two roll bonus does not get a bonus roll', () => {
       const rolls = [
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 7, 3,
       ]
@@ -107,7 +107,7 @@ describe('Bowling', () => {
       expect(bowling.score()).toEqual(20)
     })
 
-    xit('strikes with the two roll bonus do not get bonus rolls', () => {
+    it('strikes with the two roll bonus do not get bonus rolls', () => {
       const rolls = [
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 10, 10,
       ]
@@ -118,7 +118,7 @@ describe('Bowling', () => {
       expect(bowling.score()).toEqual(30)
     })
 
-    xit('last two strikes followed by only last bonus with non strike points', () => {
+    it('last two strikes followed by only last bonus with non strike points', () => {
       const rolls = [
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 10, 0, 1,
       ]
@@ -129,7 +129,7 @@ describe('Bowling', () => {
       expect(bowling.score()).toEqual(31)
     })
 
-    xit('a strike with the one roll bonus after a spare in the last frame does not get a bonus', () => {
+    it('a strike with the one roll bonus after a spare in the last frame does not get a bonus', () => {
       const rolls = [
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 3, 10,
       ]
@@ -140,7 +140,7 @@ describe('Bowling', () => {
       expect(bowling.score()).toEqual(20)
     })
 
-    xit('all strikes is a perfect game', () => {
+    it('all strikes is a perfect game', () => {
       const rolls = [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
       const bowling = new Bowling()
       rolls.forEach((roll) => {
