@@ -59,13 +59,13 @@ export class Bowling {
     let endOfGame = current.isComplete();
 
     let total = current.totalRolls();
-    let rollsToRemove = current.hasSingleRoll() ? 1 : 0;
+    let rollsToRemove = current.hasSingleRoll() && !current.isLast() ? 1 : 0;
 
     while (current.next()) {
       current = current.next()!;
       endOfGame = endOfGame && current.isComplete();
       
-      rollsToRemove += current.hasSingleRoll() ? 1 : 0;;
+      rollsToRemove += !current.isLast() && current.hasSingleRoll() ? 1 : 0;
       total += current.totalRolls();
     }
 
@@ -165,7 +165,7 @@ class Frame {
   }
 
   public addBonus(pins: number) {
-    if (this._nextRoll.roll() !== 10 && this._nextRoll.roll() + pins > 10) {
+    if (this.tabulation() !== "Spare" && this._nextRoll.roll() !== 10 && this._nextRoll.roll() + pins > 10) {
       throw new Error("Pin count exceeds pins on the lane");
     }
     this._bonus = new Roll(pins);
