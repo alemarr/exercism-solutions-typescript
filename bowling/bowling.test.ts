@@ -184,7 +184,7 @@ describe('Bowling', () => {
       }).toThrow(new Error('Pin count exceeds pins on the lane'))
     })
 
-    xit('two bonus rolls after a strike in the last frame cannot score more than 10 points', () => {
+    it('two bonus rolls after a strike in the last frame cannot score more than 10 points', () => {
       const rolls = [
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 5,
       ]
@@ -197,7 +197,7 @@ describe('Bowling', () => {
       }).toThrow(new Error('Pin count exceeds pins on the lane'))
     })
 
-    xit('two bonus rolls after a strike in the last frame can score more than 10 points if one is a strike', () => {
+    it('two bonus rolls after a strike in the last frame can score more than 10 points if one is a strike', () => {
       const rolls = [
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 10, 6,
       ]
@@ -208,7 +208,7 @@ describe('Bowling', () => {
       expect(bowling.score()).toEqual(26)
     })
 
-    xit('the second bonus rolls after a strike in the last frame cannot be a strike if the first one is not a strike', () => {
+    it('the second bonus rolls after a strike in the last frame cannot be a strike if the first one is not a strike', () => {
       const rolls = [
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 6,
       ]
@@ -221,7 +221,7 @@ describe('Bowling', () => {
       }).toThrow(new Error('Pin count exceeds pins on the lane'))
     })
 
-    xit('second bonus roll after a strike in the last frame cannot score more than 10 points', () => {
+    it('second bonus roll after a strike in the last frame cannot score more than 10 points', () => {
       const rolls = [
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 10,
       ]
@@ -234,14 +234,14 @@ describe('Bowling', () => {
       }).toThrow(new Error('Pin count exceeds pins on the lane'))
     })
 
-    xit('an unstarted game cannot be scored', () => {
+    it('an unstarted game cannot be scored', () => {
       const bowling = new Bowling()
       expect(() => {
         bowling.score()
       }).toThrow(new Error('Score cannot be taken until the end of the game'))
     })
 
-    xit('an incomplete game cannot be scored', () => {
+    it('an incomplete game cannot be scored', () => {
       const rolls = [0, 0]
       const bowling = new Bowling()
       rolls.forEach((roll) => {
@@ -252,7 +252,7 @@ describe('Bowling', () => {
       }).toThrow(new Error('Score cannot be taken until the end of the game'))
     })
 
-    xit('cannot roll if game already has ten frames', () => {
+    it('cannot roll if game already has ten frames', () => {
       const rolls = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
       const bowling = new Bowling()
       rolls.forEach((roll) => {
@@ -263,7 +263,7 @@ describe('Bowling', () => {
       }).toThrow(new Error('Cannot roll after game is over'))
     })
 
-    xit('bonus rolls for a strike in the last frame must be rolled before score can be calculated', () => {
+    it('bonus rolls for a strike in the last frame must be rolled before score can be calculated', () => {
       const rolls = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10]
       const bowling = new Bowling()
       rolls.forEach((roll) => {
@@ -274,7 +274,7 @@ describe('Bowling', () => {
       }).toThrow(new Error('Score cannot be taken until the end of the game'))
     })
 
-    xit('both bonus rolls for a strike in the last frame must be rolled before score can be calculated', () => {
+    it('both bonus rolls for a strike in the last frame must be rolled before score can be calculated', () => {
       const rolls = [
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 10,
       ]
@@ -287,7 +287,7 @@ describe('Bowling', () => {
       }).toThrow(new Error('Score cannot be taken until the end of the game'))
     })
 
-    xit('bonus roll for a spare in the last frame must be rolled before score can be calculated', () => {
+    it('bonus roll for a spare in the last frame must be rolled before score can be calculated', () => {
       const rolls = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 3]
       const bowling = new Bowling()
       rolls.forEach((roll) => {
@@ -298,7 +298,7 @@ describe('Bowling', () => {
       }).toThrow(new Error('Score cannot be taken until the end of the game'))
     })
 
-    xit('cannot roll after bonus roll for spare', () => {
+    it('cannot roll after bonus roll for spare', () => {
       const rolls = [
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 3, 2,
       ]
@@ -311,7 +311,7 @@ describe('Bowling', () => {
       }).toThrow(new Error('Cannot roll after game is over'))
     })
 
-    xit('cannot roll after bonus rolls for strike', () => {
+    it('cannot roll after bonus rolls for strike', () => {
       const rolls = [
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 3, 2,
       ]
