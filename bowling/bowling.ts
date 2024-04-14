@@ -1,3 +1,5 @@
+const MAXIMUM_NUMBER_OF_PINS = 10;
+
 export class Bowling {
   private readonly _initialFrame: Frame;
 
@@ -17,7 +19,7 @@ export class Bowling {
     if (pins < 0) {
       throw new Error("Negative roll is invalid");
     }
-    if (pins > 10) {
+    if (pins > MAXIMUM_NUMBER_OF_PINS) {
       throw new Error("Pin count exceeds pins on the lane");
     }
     let current = this._initialFrame;
@@ -25,7 +27,7 @@ export class Bowling {
       current = current.next()!;
     }
 
-    if (current.hasRolls() && current.isLast()) {
+    if (current.isLastFrameWithBothRolls()) {
       if (this.isEndOfGame()) {
         throw new Error("Cannot roll after game is over");
       }
@@ -59,24 +61,24 @@ export class Bowling {
     let endOfGame = current.isComplete();
 
     let total = current.totalRolls();
-    let rollsToRemove = current.hasSingleRoll() && !current.isLast() ? 1 : 0;
+    let rollsToDiscountFromGame = current.isNormalFrameWithSingleRow() ? 1 : 0;
 
     while (current.next()) {
       current = current.next()!;
       endOfGame = endOfGame && current.isComplete();
-      
-      rollsToRemove += !current.isLast() && current.hasSingleRoll() ? 1 : 0;
+
+      rollsToDiscountFromGame += current.isNormalFrameWithSingleRow() ? 1 : 0;
       total += current.totalRolls();
     }
 
     let finishWithBonus =
       current.isLast() &&
-      ((current.tabulation() === "Strike" && current.hasRolls()) ||
-        (current.tabulation() === "Spare" && current.hasRolls()));
+      ((current.isStrike() && current.hasRolls()) ||
+        (current.isSpare() && current.hasRolls()));
 
     const outcome = finishWithBonus
-      ? total === ROLLS_WITH_BONUS - rollsToRemove
-      : total === ROLLS_WITHOUT_BONUS - rollsToRemove;
+      ? total === ROLLS_WITH_BONUS - rollsToDiscountFromGame
+      : total === ROLLS_WITHOUT_BONUS - rollsToDiscountFromGame;
     return endOfGame && outcome;
   }
 }
@@ -149,39 +151,51 @@ class Frame {
       this._nextRoll = new Roll(pins);
     }
 
-    if (this.hasRolls() && this.total() > 10 && !this.isLast()) {
+    if (this.exceedsNormalFrameCount()) {
         throw new Error("Pin count exceeds pins on the lane");
     }
 
     this.setTabulation();
   }
 
+  private exceedsNormalFrameCount(): boolean {
+    return this.hasRolls() && this.total() > MAXIMUM_NUMBER_OF_PINS && !this.isLast();
+  }
+
+  public isLastFrameWithBothRolls(): boolean {
+    return this._isLast && this.hasRolls();
+  }
+
   private setTabulation() {
-    if (this._roll.roll() === 10) {
+    if (this._roll.roll() === MAXIMUM_NUMBER_OF_PINS) {
       this._tabulation = "Strike";
     }
 
-    this.addOpen();
-  }
-
-  public addBonus(pins: number) {
-    if (this.tabulation() !== "Spare" && this._nextRoll.roll() !== 10 && this._nextRoll.roll() + pins > 10) {
-      throw new Error("Pin count exceeds pins on the lane");
-    }
-    this._bonus = new Roll(pins);
-  }
-
-  public addOpen(): void {
-    if (this.tabulation() !== "Strike") {
+    if (!this.isStrike()) {
       if (
-        this.isComplete() &&
-        this._roll.roll() + this._nextRoll.roll() === 10
+          this.isComplete() &&
+          this._roll.roll() + this._nextRoll.roll() === MAXIMUM_NUMBER_OF_PINS
       ) {
         this._tabulation = "Spare";
       } else {
         this._tabulation = "Open";
       }
     }
+  }
+
+  public isStrike(): boolean {
+    return this._tabulation === "Strike";
+  }
+
+  public isSpare(): boolean {
+    return this._tabulation === "Spare";
+  }
+
+  public addBonus(pins: number) {
+    if (!this.isSpare() && this._nextRoll.roll() !== MAXIMUM_NUMBER_OF_PINS && this._nextRoll.roll() + pins > MAXIMUM_NUMBER_OF_PINS) {
+      throw new Error("Pin count exceeds pins on the lane");
+    }
+    this._bonus = new Roll(pins);
   }
 
   public score(): number {
@@ -191,7 +205,7 @@ class Frame {
   private getPreviousConsecutiveStrkes(): number {
     let consecutiveStrikes = 0;
     let current: Frame | undefined = this;
-    while (current?.previous()?.tabulation() === "Strike") {
+    while (current?.previous()?.isStrike()) {
       consecutiveStrikes++;
       current = current?.previous();
     }
@@ -205,41 +219,38 @@ class Frame {
 
     switch (true) {
       case this._isLast:
-        if (this.tabulation() === "Spare") {
+        if (this.isSpare()) {
           // Strike after a spare in the last frame
-          if (bonusRoll === 10) {
+          if (bonusRoll === MAXIMUM_NUMBER_OF_PINS) {
             return roll + nextRoll + bonusRoll;
           }
 
           return roll * 2 + nextRoll;
         }
-        if (this.tabulation() === "Strike") {
-          if (this._previous?.tabulation() === "Strike") {
+        if (this.isStrike() && this._previous?.isStrike()) {
             return roll * 2 + nextRoll + bonusRoll;
-          }
         }
 
         // a strike in the last frame gets a two roll bonues that is counted once
         return roll + nextRoll + bonusRoll;
-      case this._previous?.tabulation() === "Strike" &&
-        this.tabulation() === "Strike":
+      case this._previous?.isStrike() && this.isStrike():
         if (this.getPreviousConsecutiveStrkes() < 2) {
           return roll * 2 + nextRoll * 2;
         } else if (this.getPreviousConsecutiveStrkes() === 8) {
           // Perfect game
-          return roll + 10 * 10;
+          return roll + MAXIMUM_NUMBER_OF_PINS * MAXIMUM_NUMBER_OF_PINS;
         }
-        return roll + 10;
-      case this._previous?.tabulation() === "Strike":
+        return roll + MAXIMUM_NUMBER_OF_PINS;
+      case this._previous?.isStrike():
         if (this.getPreviousConsecutiveStrkes() < 2) {
           return roll * 2 + nextRoll * 2;
         }
         return (
           roll * 2 + nextRoll * 2 + roll * this.getPreviousConsecutiveStrkes()
         );
-      case this.tabulation() === "Strike":
+      case this.isStrike():
         return roll;
-      case this._previous?.tabulation() === "Spare":
+      case this._previous?.isSpare():
         return roll * 2 + nextRoll;
       default:
         return roll + nextRoll;
@@ -249,8 +260,8 @@ class Frame {
   public isComplete(): boolean {
     return (
       this.hasRolls() ||
-      this._tabulation === "Strike" ||
-      this._tabulation === "Spare"
+      this.isStrike() ||
+      this.isSpare()
     );
   }
 
@@ -263,7 +274,11 @@ class Frame {
     return total;
   }
 
-  public hasSingleRoll(): boolean {
-    return this._roll.isSet() && !this._nextRoll.isSet();
+  public isNormalFrameWithSingleRow(): boolean {
+    return !this._isLast && this._roll.isSet() && !this._nextRoll.isSet();
+  }
+
+  private sumOfRolls(): number {
+    return this._roll.roll() + this._nextRoll.roll();
   }
 }
