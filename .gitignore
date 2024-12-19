@@ -4,3 +4,4 @@
 **/.pnp.*
 **/.yarn/*
 .idea/*
+**/.vscode/*
