@@ -45,6 +45,7 @@ Typescript Track: https://exercism.org/tracks/typescript/exercises
 - [Binary Search](./binary-search)
 - [Clock](./clock)
 - [Collatz Conjecture](./collatz-conjecture)
+- [Custom Set](./custom-set)
 - [Flatten Array](./flatten-array)
 - [Grade School](./grade-school)
 - [Grains](./grains)
