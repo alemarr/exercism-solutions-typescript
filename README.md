@@ -49,6 +49,7 @@ Typescript Track: https://exercism.org/tracks/typescript/exercises
 - [Flatten Array](./flatten-array)
 - [Grade School](./grade-school)
 - [Grains](./grains)
+- [ISBN Verifier](./isbn-verifier)
 - [Largest Series Product](./largest-series-product)
 - [Linked List](./linked-list)
 - [Luhn](./luhn)
